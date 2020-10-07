@@ -47,10 +47,10 @@ export function inject(
   // a functional component
   const instance = currentInstance || currentRenderingInstance
   if (instance) {
-    const provides = instance.provides
-    if ((key as string | symbol) in provides) {
+    const parentProvides = instance.parent && instance.parent.provides
+    if (parentProvides && (key as string | symbol) in parentProvides) {
       // TS doesn't allow symbol as index type
-      return provides[key as string]
+      return parentProvides[key as string]
     } else if (arguments.length > 1) {
       return treatDefaultAsFactory && isFunction(defaultValue)
         ? defaultValue()
